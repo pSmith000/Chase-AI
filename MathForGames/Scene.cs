@@ -11,6 +11,8 @@ namespace MathForGames
         /// </summary>
         private Actor[] _actors;
 
+        private Enemy _enemy;
+
         public Scene()
         {
             _actors = new Actor[0];
@@ -31,7 +33,7 @@ namespace MathForGames
         /// Calls update for every actor in the array
         /// Calls start for the actor if it hasn't already been called
         /// </summary>
-        public virtual void Update(float deltaTime)
+        public virtual void Update(float deltaTime, Player player)
         {
             for (int i = 0; i < _actors.Length; i++)
             {

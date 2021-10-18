@@ -15,6 +15,7 @@ namespace MathForGames
         private Scene[] _scenes = new Scene[0];
         private Stopwatch _stopwatch = new Stopwatch();
 
+
         /// <summary>
         /// Called to begin the application
         /// </summary>
@@ -27,6 +28,8 @@ namespace MathForGames
             float lastTime = 0;
             float deltaTime = 0;
 
+            Player player = new Player('@', 10, 10, 100, Color.DARKPURPLE, "Player");
+
             //Loop until the application is told to close
             while (!_applicationShouldClose && !Raylib.WindowShouldClose())
             {
@@ -37,7 +40,7 @@ namespace MathForGames
                 deltaTime = currentTime - lastTime;
 
                 //Update the application
-                Update(deltaTime);
+                Update(deltaTime, player);
                 //Draw all items
                 Draw();
 
@@ -61,11 +64,13 @@ namespace MathForGames
             Raylib.SetTargetFPS(60);
 
             Scene scene = new Scene();
-            Player player = new Player('@', 10, 10, 100, Color.DARKPURPLE, "Player");
+            Player player = new Player('@', 0, 0, 200, Color.DARKPURPLE, "Player");
             Actor actor = new Actor('A', 5, 5, Color.BLACK, "Actor");
+            Enemy enemy = new Enemy('E', 50, 50, 50, player, Color.BLUE, "Enemy");
 
             scene.AddActor(player);
             scene.AddActor(actor);
+            scene.AddActor(enemy);
             _currentSceneIndex = AddScene(scene);
             _scenes[_currentSceneIndex].Start();
         }
@@ -73,9 +78,9 @@ namespace MathForGames
         /// <summary>
         /// Called everytime the game loops
         /// </summary>
-        private void Update(float deltaTime)
+        private void Update(float deltaTime, Player player)
         {
-            _scenes[_currentSceneIndex].Update(deltaTime);
+            _scenes[_currentSceneIndex].Update(deltaTime, player);
 
             while (Console.KeyAvailable)
                 Console.ReadKey(true);

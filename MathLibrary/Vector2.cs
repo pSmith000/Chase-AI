@@ -114,5 +114,10 @@ namespace MathLibrary
             return (!(lhs.X == rhs.X && lhs.Y == rhs.Y));
 
         }
+
+        public static Vector2 operator -(Vector2 lhs)
+        {
+            return new Vector2 { X = -lhs.X, Y = -lhs.Y };
+        }
     }
 }
