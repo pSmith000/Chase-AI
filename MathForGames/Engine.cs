@@ -65,12 +65,16 @@ namespace MathForGames
 
             Scene scene = new Scene();
             Player player = new Player('@', 0, 0, 200, Color.DARKPURPLE, "Player");
+            player.CollisionRadius = 30;
             Actor actor = new Actor('A', 5, 5, Color.BLACK, "Actor");
-            Enemy enemy = new Enemy('E', 50, 50, 50, player, Color.BLUE, "Enemy");
+            Enemy enemy = new Enemy('E', 50, 50, 50, 200, 45, player, Color.BLUE, "Enemy");
+            enemy.CollisionRadius = 30;
+            UI_Text text = new UI_Text(10, 10, "TestBox", Color.BEIGE, 70, 70, 15);
 
             scene.AddActor(player);
             scene.AddActor(actor);
             scene.AddActor(enemy);
+            scene.AddActor(text);
             _currentSceneIndex = AddScene(scene);
             _scenes[_currentSceneIndex].Start();
         }

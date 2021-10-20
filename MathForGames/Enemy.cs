@@ -12,6 +12,8 @@ namespace MathForGames
         private float _speed;
         private Vector2 _velocity;
         private Player _player;
+        private int _maxViewAngle;
+        private int _maxSightDistance;
 
         public float Speed
         {
@@ -25,11 +27,13 @@ namespace MathForGames
             set { _velocity = value; }
         }
 
-        public Enemy(char icon, float x, float y, float speed, Player player, Color color, string name = "Enemy")
+        public Enemy(char icon, float x, float y, float speed, int maxSightDistance, int maxViewAngle, Player player, Color color, string name = "Enemy")
             : base(icon, x, y, color, name)
         {
             _speed = speed;
             _player = player;
+            _maxSightDistance = maxSightDistance;
+            _maxViewAngle = maxViewAngle;
         }
 
         public override void Update(float deltaTime)
@@ -41,7 +45,7 @@ namespace MathForGames
             if (GetTargetInSight())
                 Position += Velocity;
             if (TargetCollide())
-                OnCollision(_player);
+                //OnCollision(_player);
 
             base.Update(deltaTime);
         }
@@ -52,34 +56,24 @@ namespace MathForGames
 
             float distanceToTarget = Vector2.Distance(_player.Position, Position);
 
+            float dotProduct = Vector2.DotProduct(directionOfTarget, Forward);
 
-            
-            if (_player.Position.X - Position.X > 150 || _player.Position.Y - Position.Y > 100)
-                return false;
-            else if (_player.Position.X - Position.X < -150 || _player.Position.Y - Position.Y < -100)
-                return false;
-            else
-                return Vector2.DotProduct(directionOfTarget, Forward) > -2;
-
-            //return Vector2.DotProduct(directionOfTarget, Forward) > .69 && distanceToTarget < 200;
+            return Math.Acos(dotProduct) * (180 / Math.PI) < _maxViewAngle && distanceToTarget < _maxSightDistance;
 
         }
 
         public bool TargetCollide()
         {
-            Vector2 directionOfTarget = (_player.Position - Position).Normalized;
-
             if (_player.Position.X - Position.X > 30 || _player.Position.Y - Position.Y > 30)
                 return false;
             else if (_player.Position.X - Position.X < -30 || _player.Position.Y - Position.Y < -40)
                 return false;
-            else
-                return Vector2.DotProduct(directionOfTarget, Forward) > -36;
+            return true;
         }
 
         public override void OnCollision(Actor actor)
         {
-            Position -= Velocity * 25;
+            //Position -= Velocity * 25;
         }
     }
 }
