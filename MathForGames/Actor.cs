@@ -19,6 +19,7 @@ namespace MathForGames
         private string _name;
         private Vector2 _position;
         private bool _started;
+        private Vector2 _forward = new Vector2(1, 0);
 
         /// <summary>
         /// True if the start function has been called for this actor
@@ -37,6 +38,18 @@ namespace MathForGames
         public Icon Icon
         {
             get { return _icon; }
+        }
+
+        public Vector2 Forward
+        {
+            get
+            {
+                return _forward;
+            }
+            set
+            {
+                _position = value;
+            }
         }
 
         public Actor(char icon, float x, float y, Color color, string name = "Actor") :

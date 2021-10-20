@@ -36,11 +36,50 @@ namespace MathForGames
         {
             Vector2 moveDirection = _player.Position - Position;
 
-            Velocity = -moveDirection.Normalized * Speed * deltaTime;
+            Velocity = moveDirection.Normalized * Speed * deltaTime;
 
-            Position += Velocity;
+            if (GetTargetInSight())
+                Position += Velocity;
+            if (TargetCollide())
+                OnCollision(_player);
 
             base.Update(deltaTime);
+        }
+
+        public bool GetTargetInSight()
+        {
+            Vector2 directionOfTarget = (_player.Position - Position).Normalized;
+
+            float distanceToTarget = Vector2.Distance(_player.Position, Position);
+
+
+            
+            if (_player.Position.X - Position.X > 150 || _player.Position.Y - Position.Y > 100)
+                return false;
+            else if (_player.Position.X - Position.X < -150 || _player.Position.Y - Position.Y < -100)
+                return false;
+            else
+                return Vector2.DotProduct(directionOfTarget, Forward) > -2;
+
+            //return Vector2.DotProduct(directionOfTarget, Forward) > .69 && distanceToTarget < 200;
+
+        }
+
+        public bool TargetCollide()
+        {
+            Vector2 directionOfTarget = (_player.Position - Position).Normalized;
+
+            if (_player.Position.X - Position.X > 30 || _player.Position.Y - Position.Y > 30)
+                return false;
+            else if (_player.Position.X - Position.X < -30 || _player.Position.Y - Position.Y < -40)
+                return false;
+            else
+                return Vector2.DotProduct(directionOfTarget, Forward) > -36;
+        }
+
+        public override void OnCollision(Actor actor)
+        {
+            Position -= Velocity * 25;
         }
     }
 }
